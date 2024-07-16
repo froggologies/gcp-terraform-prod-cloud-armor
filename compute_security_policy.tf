@@ -1,6 +1,7 @@
 resource "google_compute_security_policy" "policy1" {
-  project = google_project.default.project_id
-  name    = "crs-security-policy"
+  depends_on = [google_project_service.services.0]
+  project    = google_project.default.project_id
+  name       = "crs-security-policy"
   rule {
     action   = "allow"
     priority = "2147483647"

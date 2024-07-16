@@ -13,22 +13,6 @@ resource "google_compute_firewall" "default-allow-icmp" {
   }
 }
 
-resource "google_compute_firewall" "default-allow-rdp" {
-  network = google_compute_network.default.name
-  project = google_project.default.project_id
-
-  description = "Allows RDP connections from any source to any instance on the network using port 3389."
-
-  name          = "default-allow-rdp"
-  priority      = 65534
-  source_ranges = ["0.0.0.0/0"]
-
-  allow {
-    protocol = "tcp"
-    ports    = ["3389"]
-  }
-}
-
 resource "google_compute_firewall" "default-allow-ssh" {
   network = google_compute_network.default.name
   project = google_project.default.project_id

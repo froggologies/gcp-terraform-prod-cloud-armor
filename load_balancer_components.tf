@@ -1,6 +1,7 @@
 resource "google_compute_health_check" "health-check1" {
-  project = google_project.default.project_id
-  name    = "health-check1"
+  depends_on = [google_project_service.services.0]
+  project    = google_project.default.project_id
+  name       = "health-check1"
 
   tcp_health_check {
     port_specification = "USE_SERVING_PORT"

@@ -1,4 +1,5 @@
 resource "google_compute_network" "default" {
+  depends_on              = [google_project_service.services.0]
   project                 = google_project.default.project_id
   name                    = "default"
   auto_create_subnetworks = false
