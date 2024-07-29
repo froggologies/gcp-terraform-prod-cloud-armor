@@ -17,3 +17,8 @@ variable "crs_rules" {
     expression   = string
   }))
 }
+
+variable "enable_security_policy" {
+  type    = bool
+  default = false
+}

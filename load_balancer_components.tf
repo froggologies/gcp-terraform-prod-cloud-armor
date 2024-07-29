@@ -27,7 +27,7 @@ resource "google_compute_backend_service" "backend-service" {
     enable = true
   }
 
-  security_policy = google_compute_security_policy.policy1.id
+  security_policy = var.enable_security_policy ? google_compute_security_policy.policy1.id : null
 }
 
 resource "google_compute_url_map" "juice_shop_loadbalancer" {
