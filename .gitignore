@@ -40,3 +40,4 @@ terraform.rc
 
 !crs_rules.auto.tfvars
 !example_terraform.tfvars
+.terraform.lock.hcl
