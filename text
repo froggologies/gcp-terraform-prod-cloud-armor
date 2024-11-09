@@ -1,0 +1,194 @@
+3.3.3 Hasil Pengujian
+3.3.3.1 Local File Inclusion (LFI) Vulnerability
+Perintah pengujian:
+
+```
+curl -Ii "http://$PUBLIC_SVC_IP/?a=../"
+```
+
+Hasil tanpa Cloud Armor:
+
+```
+❯ curl -Ii "http://$PUBLIC_SVC_IP/?a=../"
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Feature-Policy: payment 'self'
+X-Recruiting: /#/jobs
+Accept-Ranges: bytes
+Cache-Control: public, max-age=0
+Last-Modified: Tue, 30 Jul 2024 04:28:20 GMT
+ETag: W/"ea4-19101e5761f"
+Content-Type: text/html; charset=UTF-8
+Content-Length: 3748
+Vary: Accept-Encoding
+Date: Tue, 30 Jul 2024 16:09:07 GMT
+Via: 1.1 google
+```
+
+Hasil dengan Cloud Armor:
+
+```
+❯ curl -Ii "http://$PUBLIC_SVC_IP/?a=../"
+HTTP/1.1 403 Forbidden
+Content-Length: 134
+Content-Type: text/html; charset=UTF-8
+Date: Tue, 30 Jul 2024 16:52:42 GMT
+```
+
+3.3.3.2 Remote Code Execution (RCE) Attack
+Perintah pengujian:
+
+```
+curl -Ii "http://$PUBLIC_SVC_IP/ftp?doc=/bin/ls"
+```
+
+Hasil tanpa Cloud Armor:
+
+```
+
+❯ curl -Ii "http://$PUBLIC_SVC_IP/ftp?doc=/bin/ls"
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: \*
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Feature-Policy: payment 'self'
+X-Recruiting: /#/jobs
+Content-Type: text/html; charset=utf-8
+Content-Length: 11073
+Vary: Accept-Encoding
+Date: Tue, 30 Jul 2024 16:07:57 GMT
+Via: 1.1 google
+
+```
+
+Hasil dengan Cloud Armor:
+
+```
+❯ curl -Ii "http://$PUBLIC_SVC_IP/ftp?doc=/bin/ls"
+HTTP/1.1 403 Forbidden
+Content-Length: 134
+Content-Type: text/html; charset=UTF-8
+Date: Tue, 30 Jul 2024 16:53:28 GMT
+```
+
+3.3.3.3 Scanner Detection
+Perintah pengujian:
+
+```
+curl -Ii http://$PUBLIC_SVC_IP -H "User-Agent: blackwidow"
+```
+
+Hasil tanpa Cloud Armor:
+
+```
+
+❯ curl -Ii http://$PUBLIC_SVC_IP -H "User-Agent: blackwidow"
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: \*
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Feature-Policy: payment 'self'
+X-Recruiting: /#/jobs
+Accept-Ranges: bytes
+Cache-Control: public, max-age=0
+Last-Modified: Tue, 30 Jul 2024 04:28:20 GMT
+ETag: W/"ea4-19101e5761f"
+Content-Type: text/html; charset=UTF-8
+Content-Length: 3748
+Vary: Accept-Encoding
+Date: Tue, 30 Jul 2024 16:07:21 GMT
+Via: 1.1 google
+
+```
+
+Hasil dengan Cloud Armor:
+
+```
+❯ curl -Ii http://$PUBLIC_SVC_IP -H "User-Agent: blackwidow"
+HTTP/1.1 403 Forbidden
+Content-Length: 134
+Content-Type: text/html; charset=UTF-8
+Date: Tue, 30 Jul 2024 16:56:18 GMT
+```
+
+3.3.3.4 Protocol Attack
+Perintah pengujian:
+
+```
+curl -Ii "http://$PUBLIC_SVC_IP/index.html?foo=advanced%0d%0aContent-Length:%200%0d%0a%0d%0aHTTP/1.1%20200%20OK%0d%0aContent-Type:%20text/html%0d%0aContent-Length:%2035%0d%0a%0d%0a<html>Sorry,%20System%20Down</html>"
+```
+
+Hasil tanpa Cloud Armor:
+
+```
+
+❯ curl -Ii "http://$PUBLIC_SVC_IP/index.html?foo=advanced%0d%0aContent-Length:%200%0d%0a%0d%0aHTTP/1.1%20200%20OK%0d%0aContent-Type:%20text/html%0d%0aContent-Length:%2035%0d%0a%0d%0a<html>Sorry,%20System%20Down</html>"
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: \*
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Feature-Policy: payment 'self'
+X-Recruiting: /#/jobs
+Accept-Ranges: bytes
+Cache-Control: public, max-age=0
+Last-Modified: Tue, 30 Jul 2024 04:28:20 GMT
+ETag: W/"ea4-19101e5761f"
+Content-Type: text/html; charset=UTF-8
+Content-Length: 3748
+Vary: Accept-Encoding
+Date: Tue, 30 Jul 2024 16:06:46 GMT
+Via: 1.1 google
+
+```
+
+Hasil dengan Cloud Armor:
+
+```
+❯ curl -Ii "http://$PUBLIC_SVC_IP/index.html?foo=advanced%0d%0aContent-Length:%200%0d%0a%0d%0aHTTP/1.1%20200%20OK%0d%0aContent-Type:%20text/html%0d%0aContent-Length:%2035%0d%0a%0d%0a<html>Sorry,%20System%20Down</html>"
+HTTP/1.1 403 Forbidden
+Content-Length: 134
+Content-Type: text/html; charset=UTF-8
+Date: Tue, 30 Jul 2024 16:56:52 GMT
+```
+
+3.3.3.5 Session Fixation
+Perintah pengujian:
+
+```
+curl -Ii "http://$PUBLIC_SVC_IP/?session_id=a"
+```
+
+Hasil tanpa Cloud Armor:
+
+```
+
+❯ curl -Ii "http://$PUBLIC_SVC_IP/?session_id=a"
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: \*
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Feature-Policy: payment 'self'
+X-Recruiting: /#/jobs
+Accept-Ranges: bytes
+Cache-Control: public, max-age=0
+Last-Modified: Tue, 30 Jul 2024 04:28:20 GMT
+ETag: W/"ea4-19101e5761f"
+Content-Type: text/html; charset=UTF-8
+Content-Length: 3748
+Vary: Accept-Encoding
+Date: Tue, 30 Jul 2024 15:58:05 GMT
+Via: 1.1 google
+
+```
+
+Hasil dengan Cloud Armor:
+
+```
+❯ curl -Ii "http://$PUBLIC_SVC_IP/?session_id=a"
+HTTP/1.1 403 Forbidden
+Content-Length: 134
+Content-Type: text/html; charset=UTF-8
+Date: Tue, 30 Jul 2024 16:59:21 GMT
+```
